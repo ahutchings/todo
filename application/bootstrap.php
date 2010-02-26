@@ -49,7 +49,7 @@ ini_set('unserialize_callback_func', 'spl_autoload_call');
  * - boolean  profile     enable or disable internal profiling               TRUE
  * - boolean  caching     enable or disable internal caching                 FALSE
  */
-Kohana::init(array('base_url' => '/kohana/'));
+Kohana::init(array('base_url' => '/', 'index_file' => ''));
 
 /**
  * Attach the file write to logging. Multiple writers are supported.
@@ -65,30 +65,30 @@ Kohana::$config->attach(new Kohana_Config_File);
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(array(
-	// 'auth'       => MODPATH.'auth',       // Basic authentication
-	// 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
-	// 'database'   => MODPATH.'database',   // Database access
-	// 'image'      => MODPATH.'image',      // Image manipulation
-	// 'orm'        => MODPATH.'orm',        // Object Relationship Mapping
-	// 'pagination' => MODPATH.'pagination', // Paging of results
-	// 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
-	));
+    // 'auth'       => MODPATH.'auth',       // Basic authentication
+    // 'codebench'  => MODPATH.'codebench',  // Benchmarking tool
+    'database'   => MODPATH.'database',   // Database access
+    // 'image'      => MODPATH.'image',      // Image manipulation
+    'orm'        => MODPATH.'orm',        // Object Relationship Mapping
+    // 'pagination' => MODPATH.'pagination', // Paging of results
+    // 'userguide'  => MODPATH.'userguide',  // User guide and API documentation
+    ));
 
 /**
  * Set the routes. Each route must have a minimum of a name, a URI and a set of
  * defaults for the URI.
  */
 Route::set('default', '(<controller>(/<action>(/<id>)))')
-	->defaults(array(
-		'controller' => 'welcome',
-		'action'     => 'index',
-	));
+    ->defaults(array(
+        'controller' => 'website',
+        'action'     => 'index',
+    ));
 
 /**
  * Execute the main request. A source of the URI can be passed, eg: $_SERVER['PATH_INFO'].
  * If no source is specified, the URI will be automatically detected.
  */
 echo Request::instance()
-	->execute()
-	->send_headers()
-	->response;
+    ->execute()
+    ->send_headers()
+    ->response;
