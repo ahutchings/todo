@@ -32,8 +32,8 @@ class Controller_Website extends Controller_Template
     public function action_index()
     {
         $this->template->content = View::factory('home/index')
-            ->bind('projects', $projects);
+            ->bind('tags', $tags);
 
-        $projects = ORM::factory('project')->find_all();
+        $tags = ORM::factory('tag')->find_all();
     }
 }
