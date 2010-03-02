@@ -28,7 +28,7 @@ abstract class Controller_API extends Controller_REST
     {
         foreach ($var as $k => $v) {
             if (is_array($v)) {
-                $var[$k] = $this->object_to_array($v);
+                $var[$k] = $this->as_array_recursive($v);
             }
 
             if (is_object($v) && method_exists($v, 'as_array')) {
