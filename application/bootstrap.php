@@ -67,7 +67,8 @@ Kohana::$config->attach(new Kohana_Config_File);
 Kohana::modules(array(
     'database'  => MODPATH.'database',   // Database access
     'orm'       => MODPATH.'orm',        // Object Relationship Mapping
-    'todo-core' => MODPATH.'todo-core'
+    'todo-core' => MODPATH.'todo-core',
+    'todo-api'  => MODPATH.'todo-api',
     ));
 
 /**
