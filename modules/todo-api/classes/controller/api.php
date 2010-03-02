@@ -13,16 +13,29 @@ abstract class Controller_API extends Controller_REST
 
     private function encode($var)
     {
-        // convert Database_Result objects to arrays
-        if (is_object($var) && is_a($var, 'Database_Result')) {
+        if (is_object($var) && method_exists($var, 'as_array')) {
             $var = $var->as_array();
         }
 
-        // convert ORM result collections to arrays
-        if (is_array($var) && is_object($var[0]) && is_a($var[0], 'ORM')) {
-            $var = array_map(create_function('$obj', 'return $obj->as_array();'), $var);
+        if (is_array($var)) {
+            $var = $this->as_array_recursive($var);
         }
 
         return json_encode($var);
+    }
+
+    private function as_array_recursive($var)
+    {
+        foreach ($var as $k => $v) {
+            if (is_array($v)) {
+                $var[$k] = $this->object_to_array($v);
+            }
+
+            if (is_object($v) && method_exists($v, 'as_array')) {
+                $var[$k] = $v->as_array();
+            }
+        }
+
+        return $var;
     }
 }
