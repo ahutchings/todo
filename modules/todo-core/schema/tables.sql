@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `tags_tasks` (
   `tag_id` int(10) unsigned NOT NULL,
@@ -16,5 +16,6 @@ CREATE TABLE IF NOT EXISTS `tasks` (
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `priority` int(1) unsigned NOT NULL,
   `expression` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `is_checked` int(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
