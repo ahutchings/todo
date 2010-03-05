@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `tags_tasks` (
 
 CREATE TABLE IF NOT EXISTS `tasks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `due_at` int(10) NOT NULL,
+  `due_at` int(10) DEFAULT NULL,
   `content` text COLLATE utf8_unicode_ci NOT NULL,
   `priority` int(1) unsigned NOT NULL,
   `expression` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
