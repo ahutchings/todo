@@ -7,11 +7,11 @@ abstract class Controller_API extends Controller_REST
     public function after()
     {
         $this->request->headers['Content-Type'] = 'application/json';
-        $this->request->response = $this->encode($this->response);
+        $this->request->response = $this->encode_response($this->response);
         return parent::after();
     }
 
-    private function encode($var)
+    private function encode_response($var)
     {
         if (is_object($var) && method_exists($var, 'as_array')) {
             $var = $var->as_array();
@@ -37,5 +37,26 @@ abstract class Controller_API extends Controller_REST
         }
 
         return $var;
+    }
+
+    public function input()
+    {
+        switch (Request::$method) {
+            case 'POST':
+                $input = file_get_contents('php://input', 'r');
+                break;
+            case 'PUT':
+                $stream = fopen('php://input', 'rb');
+                $input  = '';
+                while ($data = fread($stream, 1024)) {
+                    $input .= $data;
+                }
+                fclose($stream);
+                break;
+            default:
+                throw new Kohana_Exception('Unsupported request method :method', array(':method' => Request::$method));
+        }
+
+        return json_decode($input);
     }
 }
