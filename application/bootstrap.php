@@ -85,7 +85,13 @@ Route::set('default', '(<controller>(/<action>(/<id>)))')
  * Execute the main request. A source of the URI can be passed, eg: $_SERVER['PATH_INFO'].
  * If no source is specified, the URI will be automatically detected.
  */
-echo Request::instance()
-    ->execute()
-    ->send_headers()
-    ->response;
+$request = Request::instance();
+
+try {
+    $request->execute();
+} catch (HTTP_Exception $e) {
+     $request->status = $e->getCode();
+     $request->response = $e->getMessage();
+}
+
+echo $request->send_headers()->response;
