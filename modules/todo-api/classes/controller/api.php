@@ -2,6 +2,9 @@
 
 abstract class Controller_API extends Controller_REST
 {
+    /*
+     * Used by child controllers to set the response value.
+     */
     public $response;
 
     public function after()
@@ -39,6 +42,11 @@ abstract class Controller_API extends Controller_REST
         return $var;
     }
 
+    /**
+     * Retrieves the raw input data.
+     *
+     * @return mixed
+     */
     public function input()
     {
         switch (Request::$method) {
