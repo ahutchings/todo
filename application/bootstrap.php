@@ -69,6 +69,7 @@ Kohana::modules(array(
     'orm'       => MODPATH.'orm',        // Object Relationship Mapping
     'todo-core' => MODPATH.'todo-core',
     'todo-api'  => MODPATH.'todo-api',
+	'auth'      => MODPATH.'auth',
     ));
 
 /**
