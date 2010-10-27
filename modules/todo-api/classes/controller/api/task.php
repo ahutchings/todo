@@ -2,17 +2,21 @@
 
 class Controller_API_Task extends Controller_API
 {
-    public function action_index($id = null)
+    public function action_index($id = NULL)
     {
-        if (!is_null($id)) {
+        if (!is_null($id))
+		{
             $task = ORM::factory('task', $id);
 
-            if (!$task->loaded()) {
+            if (!$task->loaded())
+			{
                 throw new HTTP_Exception('The task id :id was not found.', array(':id' => $id), 404);
             }
 
             $this->response = $task;
-        } else {
+        }
+		else
+		{
             $this->response = ORM::factory('task')->find_all();
         }
     }

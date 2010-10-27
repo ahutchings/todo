@@ -2,11 +2,14 @@
 
 class Controller_API_Tag extends Controller_API
 {
-    public function action_index($id = null)
+    public function action_index($id = NULL)
     {
-        if (!is_null($id)) {
+        if (!is_null($id))
+		{
             $this->response = ORM::factory('tag', $id);
-        } else {
+        }
+		else
+		{
             $this->response = ORM::factory('tag')->find_all();
         }
     }
