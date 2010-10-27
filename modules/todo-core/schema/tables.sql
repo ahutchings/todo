@@ -24,18 +24,20 @@ CREATE TABLE roles_users (
 
 
 CREATE TABLE tags (
-  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  id int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   created_at int(10) unsigned NOT NULL,
   updated_at int(10) unsigned DEFAULT NULL,
-  PRIMARY KEY (id)
+  user_id int(11) unsigned NOT NULL,
+  PRIMARY KEY (id),
+  KEY user_id (user_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
 
 CREATE TABLE tags_tasks (
-  tag_id int(10) unsigned NOT NULL,
-  task_id int(10) unsigned NOT NULL,
+  tag_id int(11) unsigned NOT NULL,
+  task_id int(11) unsigned NOT NULL,
   PRIMARY KEY (tag_id,task_id),
   KEY tag_id (tag_id),
   KEY task_id (task_id)
@@ -44,7 +46,7 @@ CREATE TABLE tags_tasks (
 
 
 CREATE TABLE tasks (
-  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  id int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` text COLLATE utf8_unicode_ci NOT NULL,
   created_at int(10) unsigned NOT NULL,
   updated_at int(10) unsigned DEFAULT NULL,
@@ -52,7 +54,9 @@ CREATE TABLE tasks (
   due_at int(10) unsigned DEFAULT NULL,
   `repeat` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   priority int(1) unsigned DEFAULT NULL,
-  PRIMARY KEY (id)
+  user_id int(11) unsigned NOT NULL,
+  PRIMARY KEY (id),
+  KEY user_id (user_id)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
@@ -88,9 +92,15 @@ ALTER TABLE `roles_users`
   ADD CONSTRAINT roles_users_ibfk_1 FOREIGN KEY (user_id) REFERENCES `users` (id) ON DELETE CASCADE,
   ADD CONSTRAINT roles_users_ibfk_2 FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE;
 
+ALTER TABLE `tags`
+  ADD CONSTRAINT tags_ibfk_1 FOREIGN KEY (user_id) REFERENCES `users` (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
 ALTER TABLE `tags_tasks`
   ADD CONSTRAINT tags_tasks_ibfk_2 FOREIGN KEY (task_id) REFERENCES tasks (id) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT tags_tasks_ibfk_1 FOREIGN KEY (tag_id) REFERENCES tags (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tasks`
+  ADD CONSTRAINT tasks_ibfk_1 FOREIGN KEY (user_id) REFERENCES `users` (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `user_tokens`
   ADD CONSTRAINT user_tokens_ibfk_1 FOREIGN KEY (user_id) REFERENCES `users` (id) ON DELETE CASCADE;
