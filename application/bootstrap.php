@@ -65,11 +65,12 @@ Kohana::$config->attach(new Kohana_Config_File);
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(array(
-    'database'  => MODPATH.'database',   // Database access
-    'orm'       => MODPATH.'orm',        // Object Relationship Mapping
-    'todo-core' => MODPATH.'todo-core',
-    'todo-api'  => MODPATH.'todo-api',
-	'auth'      => MODPATH.'auth',
+    'database'     => MODPATH.'database',   // Database access
+    'orm'          => MODPATH.'orm',        // Object Relationship Mapping
+    'todo-core'    => MODPATH.'todo-core',
+    'todo-api'     => MODPATH.'todo-api',
+	'todo-website' => MODPATH.'todo-website',
+	'auth'         => MODPATH.'auth',
     ));
 
 /**
