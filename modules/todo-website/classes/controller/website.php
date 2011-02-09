@@ -6,7 +6,7 @@ class Controller_Website extends Controller_Template {
 
 	public function before()
 	{
-		if ($this->request->action === 'media')
+		if ($this->request->action() === 'media')
 		{
 			// Do not template media files
 			$this->auto_render = FALSE;
@@ -23,7 +23,7 @@ class Controller_Website extends Controller_Template {
 	public function action_media()
 	{
 		// Generate and check the ETag for this file
-		$this->request->check_cache(sha1($this->request->uri));
+		$this->request->check_cache(sha1($this->request->uri()));
 
 		// Get the file path from the request
 		$file = $this->request->param('file');
@@ -37,12 +37,13 @@ class Controller_Website extends Controller_Template {
 		if ($file = Kohana::find_file('media', $file, $ext))
 		{
 			// Send the file content as the response
-			$this->request->response = file_get_contents($file);
+			$this->response->body(file_get_contents($file));
 		}
 		else
 		{
 			// Return a 404 status
-			$this->request->status = 404;
+			$this->response->status(404);
+			$this->response->body('File not found!');
 		}
 
 		// Set the proper headers to allow caching

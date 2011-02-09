@@ -4,20 +4,21 @@ class Controller_API_Task extends Controller_API
 {
     public function action_index($id = NULL)
     {
-        if (!is_null($id))
+        if ($id)
 		{
             $task = ORM::factory('task', $id);
 
-            if (!$task->loaded())
+            if ( ! $task->loaded())
 			{
-                throw new HTTP_Exception('The task id :id was not found.', array(':id' => $id), 404);
+			    throw new Http_Exception_404('The task id :id was not found.',
+			        array(':id' => $id));
             }
 
-            $this->response = $task;
+            $this->_raw_response = $task;
         }
 		else
 		{
-            $this->response = ORM::factory('task')->find_all();
+            $this->_raw_response = ORM::factory('task')->find_all();
         }
     }
 
@@ -27,8 +28,8 @@ class Controller_API_Task extends Controller_API
             ->values($this->input())
             ->save();
 
-        $this->request->status = 201;
-        $this->response = array('ok' => TRUE, 'id' => $task->id);
+        $this->response->status(201);
+        $this->_raw_response = array('ok' => TRUE, 'id' => $task->id);
     }
 
     public function action_update($id)
@@ -37,13 +38,13 @@ class Controller_API_Task extends Controller_API
             ->values($this->input())
             ->save();
 
-        $this->response = array('ok' => TRUE, 'id' => $task->id);
+        $this->_raw_response = array('ok' => TRUE, 'id' => $task->id);
     }
 
     public function action_delete($id)
     {
         ORM::factory('task')->delete($id);
 
-        $this->response = array('ok' => TRUE);
+        $this->_raw_response = array('ok' => TRUE);
     }
 }

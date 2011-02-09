@@ -4,13 +4,13 @@ class Controller_API_Tag extends Controller_API
 {
     public function action_index($id = NULL)
     {
-        if (!is_null($id))
+        if ($id)
 		{
-            $this->response = ORM::factory('tag', $id);
+            $this->_raw_response = ORM::factory('tag', $id);
         }
 		else
 		{
-            $this->response = ORM::factory('tag')->find_all();
+            $this->_raw_response = ORM::factory('tag')->find_all();
         }
     }
 
@@ -20,8 +20,8 @@ class Controller_API_Tag extends Controller_API
             ->values($this->input())
             ->save();
 
-        $this->request->status = 201;
-        $this->response = array('ok' => TRUE, 'id' => $task->id);
+        $this->response->status(201);
+        $this->_raw_response = array('ok' => TRUE, 'id' => $task->id);
     }
 
     public function action_update($id)
@@ -30,7 +30,7 @@ class Controller_API_Tag extends Controller_API
             ->values($this->input())
             ->save();
 
-        $this->response = array('ok' => TRUE, 'id' => $tag->id);
+        $this->_raw_response = array('ok' => TRUE, 'id' => $tag->id);
     }
 
     public function action_delete($id)
