@@ -56,7 +56,16 @@ class Controller_API_Task extends Controller_API
 
     public function action_delete($id)
     {
-        ORM::factory('task')->delete($id);
+        $task = ORM::factory('task', $id);
+
+        if ( ! $task->loaded())
+		{
+		    throw new Http_Exception_404('The resource that you requested
+		        does not exist. Verify that any bucket name or object key
+		        provided is valid.');
+        }
+
+        $task->delete($id);
 
         $this->_raw_response = array('ok' => TRUE);
     }
