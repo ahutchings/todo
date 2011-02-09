@@ -10,8 +10,9 @@ class Controller_API_Task extends Controller_API
 
             if ( ! $task->loaded())
 			{
-			    throw new Http_Exception_404('The task id :id was not found.',
-			        array(':id' => $id));
+			    throw new Http_Exception_404('The resource that you requested
+			        does not exist. Verify that any bucket name or object key
+			        provided is valid.');
             }
 
             $this->_raw_response = $task;
@@ -24,9 +25,21 @@ class Controller_API_Task extends Controller_API
 
     public function action_create()
     {
-        $task = ORM::factory('task')
-            ->values($this->input())
-            ->save();
+        // Decode the posted JSON object as an array
+        $values = json_decode($this->request->body(), TRUE);
+        
+        $task = ORM::factory('task')->values($values);
+            
+        try
+        {
+            $task->save();
+        }
+        catch (ORM_Validation_Exception $e)
+        {
+            throw new Http_Exception_400('The server could not understand your
+                request. Verify that request parameters (and content, if any)
+                are valid.');
+        }
 
         $this->response->status(201);
         $this->_raw_response = array('ok' => TRUE, 'id' => $task->id);

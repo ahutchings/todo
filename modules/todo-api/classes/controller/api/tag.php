@@ -16,8 +16,11 @@ class Controller_API_Tag extends Controller_API
 
     public function action_create()
     {
+        // Decode the posted JSON object as an array
+        $values = json_decode($this->request->body(), TRUE);
+        
         $task = ORM::factory('task')
-            ->values($this->input())
+            ->values($values)
             ->save();
 
         $this->response->status(201);

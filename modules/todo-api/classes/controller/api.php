@@ -47,32 +47,4 @@ abstract class Controller_API extends Controller_REST
 
         return $var;
     }
-
-    /**
-     * Retrieves the raw input data.
-     *
-     * @return mixed
-     */
-    public function input()
-    {
-        switch (Request::$method)
-        {
-            case 'POST':
-                $input = file_get_contents('php://input', 'r');
-                break;
-            case 'PUT':
-                $stream = fopen('php://input', 'rb');
-                $input  = '';
-                while ($data = fread($stream, 1024))
-                {
-                    $input .= $data;
-                }
-                fclose($stream);
-                break;
-            default:
-                throw new Kohana_Exception('Unsupported request method :method', array(':method' => Request::$method));
-        }
-
-        return json_decode($input);
-    }
 }
