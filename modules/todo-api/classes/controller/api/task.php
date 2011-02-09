@@ -47,9 +47,30 @@ class Controller_API_Task extends Controller_API
 
     public function action_update($id)
     {
-        $task = ORM::factory('task', $id)
-            ->values($this->input())
-            ->save();
+        $task = ORM::factory('task', $id);
+        
+        if ( ! $task->loaded())
+		{
+		    throw new Http_Exception_404('The resource that you requested
+		        does not exist. Verify that any bucket name or object key
+		        provided is valid.');
+        }
+        
+        // Decode the posted JSON object as an array
+        $values = json_decode($this->request->body(), TRUE);
+
+        $task->values($values);
+        
+        try
+        {
+            $task->save();   
+        }
+        catch (ORM_Validation_Exception $e)
+        {
+            throw new Http_Exception_400('The server could not understand your
+                request. Verify that request parameters (and content, if any)
+                are valid.');
+        }
 
         $this->_raw_response = array('ok' => TRUE, 'id' => $task->id);
     }
@@ -65,7 +86,7 @@ class Controller_API_Task extends Controller_API
 		        provided is valid.');
         }
 
-        $task->delete($id);
+        $task->delete();
 
         $this->_raw_response = array('ok' => TRUE);
     }
